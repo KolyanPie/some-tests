@@ -1,7 +1,11 @@
-package src;
+package SD;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MainPanel extends JPanel {
 
@@ -49,7 +53,7 @@ public class MainPanel extends JPanel {
         add(sliderWidth).setBounds(70, 510, 420, 46);
         sliderHeight = createSlider(2, 50, 10, 1, 12);
         add(sliderHeight).setBounds(70, 569, 420, 46);
-        sliderHouses = createSlider(2, 2500, 30, 25, 1249);
+        sliderHouses = createSlider(2, 50, 30, 1, 156);
         add(sliderHouses).setBounds(70, 622, 420, 46);
 
         buttonA = new JButton(new ImageIcon("res/iconBtnA.png"));
@@ -62,6 +66,8 @@ public class MainPanel extends JPanel {
         add(buttonMan).setBounds(510, 160, 90, 90);
         buttonWay = new JButton(new ImageIcon("res/iconBtnWay.png"));
         add(buttonWay).setBounds(510, 260, 90, 90);
+
+        addListeners();
     }
 
     public MainPanel() {
@@ -74,6 +80,23 @@ public class MainPanel extends JPanel {
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
         return slider;
+    }
+
+    private void coValues(JTextField textField, JSlider slider) {
+        textField.addActionListener(e -> slider.setValue(Integer.parseInt(textField.getText())));
+        slider.addChangeListener(e -> {
+            textField.setText(String.valueOf(slider.getValue()));
+            int s = sliderHeight.getValue() * sliderWidth.getValue();
+            sliderHouses.setMaximum(s / 2);
+            sliderHouses.setMinorTickSpacing(s / 49);
+            sliderHouses.setMajorTickSpacing(s / 7);
+        });
+    }
+
+    private void addListeners() {
+        coValues(textFieldWidth, sliderWidth);
+        coValues(textFieldHeight, sliderHeight);
+        coValues(textFieldHouses, sliderHouses);
     }
 
     private int maxHomes() {
