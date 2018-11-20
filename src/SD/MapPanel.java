@@ -3,7 +3,7 @@ package SD;
 import javax.swing.*;
 import java.awt.*;
 
-public class MapPanel extends JPanel {
+class MapPanel extends JPanel {
 
     private final int WIDTH = 500;
     private final int HEIGHT = 500;

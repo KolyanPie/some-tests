@@ -9,7 +9,7 @@ public class DigitFilter extends DocumentFilter {
     private static final String DIGITS = "\\d+";
     private JTextField textField;
 
-    public DigitFilter(JTextField textField) {
+    DigitFilter(JTextField textField) {
         this.textField = textField;
     }
 

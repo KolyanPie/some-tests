@@ -3,11 +3,9 @@ package SD;
 import javax.swing.*;
 import java.awt.*;
 
-public class ProjectFrame extends JFrame {
+class ProjectFrame extends JFrame {
 
-    private JPanel panel = new JPanel();
-
-    public ProjectFrame() throws HeadlessException {
+    ProjectFrame() throws HeadlessException {
         super("Своет департатеф");
         setIconImage(new ImageIcon("res/icon.png").getImage());
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

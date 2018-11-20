@@ -3,7 +3,7 @@ package SD;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class MapMouseListener implements MouseListener {
+class MapMouseListener implements MouseListener {
 
     private MapPanel mapPanel;
     private int width;
