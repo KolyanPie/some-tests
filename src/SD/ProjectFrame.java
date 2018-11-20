@@ -13,7 +13,8 @@ public class ProjectFrame extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         add(new MainPanel());
         setVisible(true);
-        setSize(new Dimension(609 + getInsets().left + getInsets().right, 678 + getInsets().top + getInsets().bottom));
+        setSize(new Dimension(609 + getInsets().left + getInsets().right,
+                678 + getInsets().top + getInsets().bottom));
         setResizable(false);
         setLocationRelativeTo(null);
     }

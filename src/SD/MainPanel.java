@@ -3,6 +3,7 @@ package SD;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.text.PlainDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,9 +12,6 @@ public class MainPanel extends JPanel {
 
     private MapPanel mapPanel;
 
-    private JLabel labelWidth;
-    private JLabel labelHeight;
-    private JLabel labelHouses;
     private JTextField textFieldWidth;
     private JTextField textFieldHeight;
     private JTextField textFieldHouses;
@@ -34,13 +32,12 @@ public class MainPanel extends JPanel {
         setLayout(null);
         mapPanel = new MapPanel();
         add(mapPanel).setBounds(0, 0, 500, 500);
+    }
 
-        labelWidth = new JLabel("width");
-        add(labelWidth).setBounds(10, 510, 50, 23);
-        labelHeight = new JLabel("height");
-        add(labelHeight).setBounds(10, 569, 50, 23);
-        labelHouses = new JLabel("houses");
-        add(labelHouses).setBounds(10, 622, 50, 23);
+    {
+        add(new JLabel("width")).setBounds(10, 510, 50, 23);
+        add(new JLabel("height")).setBounds(10, 569, 50, 23);
+        add(new JLabel("houses")).setBounds(10, 622, 50, 23);
 
         textFieldWidth = new JTextField("10");
         add(textFieldWidth).setBounds(10, 533, 50, 23);
@@ -55,7 +52,9 @@ public class MainPanel extends JPanel {
         add(sliderHeight).setBounds(70, 569, 420, 46);
         sliderHouses = createSlider(2, 50, 30, 1, 156);
         add(sliderHouses).setBounds(70, 622, 420, 46);
+    }
 
+    {
         buttonA = new JButton(new ImageIcon("res/iconBtnA.png"));
         add(buttonA).setBounds(510, 10, 40, 40);
         buttonB = new JButton(new ImageIcon("res/iconBtnB.png"));
@@ -66,11 +65,11 @@ public class MainPanel extends JPanel {
         add(buttonMan).setBounds(510, 160, 90, 90);
         buttonWay = new JButton(new ImageIcon("res/iconBtnWay.png"));
         add(buttonWay).setBounds(510, 260, 90, 90);
-
-        addListeners();
     }
 
-    public MainPanel() {
+    {
+        addListeners();
+        addFilters();
     }
 
     private JSlider createSlider(int min, int max, int value, int minor, int major) {
@@ -80,6 +79,17 @@ public class MainPanel extends JPanel {
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
         return slider;
+    }
+
+    private void addListeners() {
+        coValues(textFieldWidth, sliderWidth);
+        coValues(textFieldHeight, sliderHeight);
+        coValues(textFieldHouses, sliderHouses);
+        buttonMap.addActionListener(e -> {
+            mapPanel.generateMap(sliderWidth.getValue(), sliderHeight.getValue(),
+                    sliderHouses.getValue());
+            mapPanel.repaint();
+        });
     }
 
     private void coValues(JTextField textField, JSlider slider) {
@@ -93,14 +103,13 @@ public class MainPanel extends JPanel {
         });
     }
 
-    private void addListeners() {
-        coValues(textFieldWidth, sliderWidth);
-        coValues(textFieldHeight, sliderHeight);
-        coValues(textFieldHouses, sliderHouses);
+    private void addFilters() {
+        PlainDocument doc = (PlainDocument) textFieldWidth.getDocument();
+        doc.setDocumentFilter(new DigitFilter(textFieldWidth));
+        doc = (PlainDocument) textFieldHeight.getDocument();
+        doc.setDocumentFilter(new DigitFilter(textFieldHeight));
+        doc = (PlainDocument) textFieldHouses.getDocument();
+        doc.setDocumentFilter(new DigitFilter(textFieldHouses));
     }
 
-    private int maxHomes() {
-
-        return 0;
-    }
 }

@@ -14,7 +14,8 @@ public class DigitFilter extends DocumentFilter {
     }
 
     @Override
-    public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+    public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
+            throws BadLocationException {
 
         if (string.matches(DIGITS) && (textField.getText().length() + string.length() < 5)) {
             super.insertString(fb, offset, string, attr);
@@ -23,7 +24,8 @@ public class DigitFilter extends DocumentFilter {
     }
 
     @Override
-    public void replace(FilterBypass fb, int offset, int length, String string, AttributeSet attrs) throws BadLocationException {
+    public void replace(FilterBypass fb, int offset, int length, String string, AttributeSet attrs)
+            throws BadLocationException {
         int l = 0;
         if (textField.getSelectedText() != null) {
             l = textField.getSelectedText().length();
