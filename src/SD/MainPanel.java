@@ -22,15 +22,19 @@ class MainPanel extends JPanel {
     private JButton buttonMan;
     private JButton buttonWay;
 
-    {
+    MainPanel() {
         setSize(609, 678);
         setBackground(Color.LIGHT_GRAY);
         setLayout(null);
         mapPanel = new MapPanel();
         add(mapPanel).setBounds(0, 0, 500, 500);
+        initializeSettingsThings();
+        initializeButtons();
+        addListeners();
+        addFilters();
     }
 
-    {
+    private void initializeSettingsThings() {
         add(new JLabel("width")).setBounds(10, 510, 50, 23);
         add(new JLabel("height")).setBounds(10, 569, 50, 23);
         add(new JLabel("houses")).setBounds(10, 622, 50, 23);
@@ -50,7 +54,7 @@ class MainPanel extends JPanel {
         add(sliderHouses).setBounds(70, 622, 420, 46);
     }
 
-    {
+    private void initializeButtons() {
         buttonA = new JButton(new ImageIcon("res/iconBtnA.png"));
         add(buttonA).setBounds(510, 10, 40, 40);
         buttonB = new JButton(new ImageIcon("res/iconBtnB.png"));
@@ -61,11 +65,6 @@ class MainPanel extends JPanel {
         add(buttonMan).setBounds(510, 160, 90, 90);
         buttonWay = new JButton(new ImageIcon("res/iconBtnWay.png"));
         add(buttonWay).setBounds(510, 260, 90, 90);
-    }
-
-    {
-        addListeners();
-        addFilters();
     }
 
     private JSlider createSlider(int min, int max, int value, int minor, int major) {
@@ -81,15 +80,36 @@ class MainPanel extends JPanel {
         coValues(textFieldWidth, sliderWidth);
         coValues(textFieldHeight, sliderHeight);
         coValues(textFieldHouses, sliderHouses);
+        buttonA.addActionListener(e -> {
+
+        });
+        buttonB.addActionListener(e -> {
+
+        });
         buttonMap.addActionListener(e -> {
             mapPanel.generateMap(sliderWidth.getValue(), sliderHeight.getValue(),
                     sliderHouses.getValue());
             mapPanel.repaint();
         });
+        buttonMan.addActionListener(e -> {
+            
+        });
+        buttonWay.addActionListener(e -> {
+
+        });
     }
 
     private void coValues(JTextField textField, JSlider slider) {
-        textField.addActionListener(e -> slider.setValue(Integer.parseInt(textField.getText())));
+        textField.addActionListener(e -> {
+            try {
+                slider.setValue(Integer.parseInt(textField.getText()));
+                textField.setText(String.valueOf(slider.getValue()));
+            }
+            catch (Exception exc) {
+                textField.setText(String.valueOf(slider.getMaximum()));
+                slider.setValue(slider.getMaximum());
+            }
+        });
         slider.addChangeListener(e -> {
             textField.setText(String.valueOf(slider.getValue()));
             int s = sliderHeight.getValue() * sliderWidth.getValue();
@@ -100,12 +120,14 @@ class MainPanel extends JPanel {
     }
 
     private void addFilters() {
-        PlainDocument doc = (PlainDocument) textFieldWidth.getDocument();
-        doc.setDocumentFilter(new DigitFilter(textFieldWidth));
+        PlainDocument doc;
+
+        doc = (PlainDocument) textFieldWidth.getDocument();
+        doc.setDocumentFilter(new DigitFilter());
         doc = (PlainDocument) textFieldHeight.getDocument();
-        doc.setDocumentFilter(new DigitFilter(textFieldHeight));
+        doc.setDocumentFilter(new DigitFilter());
         doc = (PlainDocument) textFieldHouses.getDocument();
-        doc.setDocumentFilter(new DigitFilter(textFieldHouses));
+        doc.setDocumentFilter(new DigitFilter());
     }
 
 }
