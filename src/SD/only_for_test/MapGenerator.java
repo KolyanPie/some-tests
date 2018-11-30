@@ -9,6 +9,11 @@ public class MapGenerator {
     private int homes;
     private Elements[][] field;
     private int count = 0;
+    private House[] houses;
+
+    public House[] getHouses() {
+        return houses;
+    }
 
     public MapGenerator(int width, int height, int homes) {
         this.width = width;
@@ -51,11 +56,11 @@ public class MapGenerator {
                 currentPoint = neighbours.get(randNum);
                 visited[currentPoint.x][currentPoint.y] = true;
                 count--;
-            }
-            else {
+            } else {
                 currentPoint = stack.pop();
             }
         }
+        generateHouses();
     }
 
     private ArrayList<Point> getNeighbours(Point currentPoint, boolean[][] visited) {
@@ -71,6 +76,51 @@ public class MapGenerator {
         }
         if (currentPoint.y < height - height % 2 - 1 && !visited[currentPoint.x][currentPoint.y + 2]) {
             arrayList.add(new Point(currentPoint.x, currentPoint.y + 2));
+        }
+        return arrayList;
+    }
+
+    private void generateHouses() {
+        ArrayList<Point> arrayList = new ArrayList<>();
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                if (field[i][j].equals(Elements.ROAD)) {
+                    arrayList.add(new Point(i, j));
+                }
+            }
+        }
+        int randNum;
+        ArrayList<Point> neighbours;
+        Point house;
+        houses = new House[homes];
+        for (int i = 0; i < homes && arrayList.size() > 0; ) {
+            randNum = (int) (Math.random() * arrayList.size());
+            neighbours = getEmptyNeighbours(arrayList.get(randNum));
+            if (neighbours.size() != 0) {
+                house = neighbours.get((int) (Math.random() * neighbours.size()));
+                field[house.x][house.y] = Elements.HOUSE;
+                houses[i] = new House(arrayList.get(randNum), house);
+                i++;
+            }
+            else {
+                arrayList.remove(randNum);
+            }
+        }
+    }
+
+    private ArrayList<Point> getEmptyNeighbours(Point currentPoint) {
+        ArrayList<Point> arrayList = new ArrayList<>();
+        if (currentPoint.x > 0 && field[currentPoint.x - 1][currentPoint.y].equals(Elements.GRASS)) {
+            arrayList.add(new Point(currentPoint.x - 1, currentPoint.y));
+        }
+        if (currentPoint.y > 0 && field[currentPoint.x][currentPoint.y - 1].equals(Elements.GRASS)) {
+            arrayList.add(new Point(currentPoint.x, currentPoint.y - 1));
+        }
+        if (currentPoint.x < width - 1 && field[currentPoint.x + 1][currentPoint.y].equals(Elements.GRASS)) {
+            arrayList.add(new Point(currentPoint.x + 1, currentPoint.y));
+        }
+        if (currentPoint.y < height - 1 && field[currentPoint.x][currentPoint.y + 1].equals(Elements.GRASS)) {
+            arrayList.add(new Point(currentPoint.x, currentPoint.y + 1));
         }
         return arrayList;
     }

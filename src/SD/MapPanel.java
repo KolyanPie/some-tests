@@ -1,10 +1,12 @@
 package SD;
 
 import SD.only_for_test.Elements;
+import SD.only_for_test.House;
 import SD.only_for_test.MapGenerator;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseListener;
 
 class MapPanel extends JPanel {
 
@@ -12,11 +14,12 @@ class MapPanel extends JPanel {
     private final int HEIGHT = 500;
     private int width;
     private int height;
-    private int houses;
+    private int housesNum;
     private int x1;
     private int y1;
     private int squareSize;
     private Elements[][] field;
+    private House[] houses;
     private int i, j;
     private Image grass = new ImageIcon("res/map/grass.png").getImage();
     private Image roadH = new ImageIcon("res/map/roadH.png").getImage();
@@ -29,21 +32,24 @@ class MapPanel extends JPanel {
     private Image roadB = new ImageIcon("res/map/roadB.png").getImage();
     private Image roadL = new ImageIcon("res/map/roadL.png").getImage();
     private Image roadT = new ImageIcon("res/map/roadT.png").getImage();
-    private Image house = new ImageIcon("res/map/house.png").getImage();
+    private Image houseR = new ImageIcon("res/map/houseR.png").getImage();
+    private Image houseB = new ImageIcon("res/map/houseB.png").getImage();
+    private Image houseL = new ImageIcon("res/map/houseL.png").getImage();
+    private Image houseT = new ImageIcon("res/map/houseT.png").getImage();
 
     MapPanel() {
         width = 15;
         height = 15;
+        housesNum = 30;
         squareSize = Math.min(WIDTH / width, HEIGHT / height);
         x1 = (WIDTH - width * squareSize) / 2;
         y1 = (HEIGHT - height * squareSize) / 2;
-        addMouseListener(new MapMouseListener(this, width, height, x1, y1, squareSize));
     }
 
-    void generateMap(int width, int height, int houses) {
+    void generateMap(int width, int height, int housesNum) {
         this.width = width;
         this.height = height;
-        this.houses = houses;
+        this.housesNum = housesNum;
     }
 
     @Override
@@ -77,7 +83,7 @@ class MapPanel extends JPanel {
     }
 
     private void drawField(Graphics g) {
-        MapGenerator mapGenerator = new MapGenerator(width, height, houses);
+        MapGenerator mapGenerator = new MapGenerator(width, height, housesNum);
         field = mapGenerator.getField();
 
         squareSize = Math.min(WIDTH / width, HEIGHT / height);
@@ -92,9 +98,31 @@ class MapPanel extends JPanel {
                     case GRASS:
                         g.drawImage(grass, x1 + i * squareSize, y1 + j * squareSize, squareSize, squareSize, null);
                         break;
+                    case HOUSE:
+                        g.drawImage(grass, x1 + i * squareSize, y1 + j * squareSize, squareSize, squareSize, null);
+                        break;
                 }
             }
         }
+        House[] houses = mapGenerator.getHouses();
+        for (House h : houses) {
+            if (h.road.x - h.house.x == 1) {
+                g.drawImage(houseR, x1 + h.house.x * squareSize, y1 + h.house.y * squareSize, squareSize, squareSize, null);
+            }
+            if (h.road.x - h.house.x == -1) {
+                g.drawImage(houseL, x1 + h.house.x * squareSize, y1 + h.house.y * squareSize, squareSize, squareSize, null);
+            }
+            if (h.road.y - h.house.y == 1) {
+                g.drawImage(houseB, x1 + h.house.x * squareSize, y1 + h.house.y * squareSize, squareSize, squareSize, null);
+            }
+            if (h.road.y - h.house.y == -1) {
+                g.drawImage(houseT, x1 + h.house.x * squareSize, y1 + h.house.y * squareSize, squareSize, squareSize, null);
+            }
+        }
+        for (MouseListener m : getMouseListeners()) {
+            removeMouseListener(m);
+        }
+        addMouseListener(new MapMouseListener(this, houses, x1, y1, squareSize));
     }
 
     private void drawRoad(Graphics g, int i, int j) {
@@ -141,5 +169,14 @@ class MapPanel extends JPanel {
 
     private boolean top() {
         return field[i][j - 1].equals(Elements.ROAD);
+    }
+
+    public void click(int id, boolean isLeftClick) {
+        if (isLeftClick) {
+            System.out.println("left");
+        }
+        else {
+            System.out.println("right");
+        }
     }
 }
