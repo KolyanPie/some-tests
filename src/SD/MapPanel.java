@@ -1,8 +1,6 @@
 package SD;
 
-import SD.only_for_test.Elements;
-import SD.only_for_test.House;
-import SD.only_for_test.MapGenerator;
+import SD.only_for_test.*;
 import SD.only_for_test.Point;
 
 import javax.swing.*;
@@ -26,6 +24,9 @@ class MapPanel extends JPanel {
     private House houseBeginPoint;
     private House houseEndPoint;
     private MapGenerator mapGenerator;
+    private WayFinder wayFinder;
+    private int manId;
+    private Point[] way;
 
     private Image grass = new ImageIcon("res/map/grass.png").getImage();
     private Image roadH = new ImageIcon("res/map/roadH.png").getImage();
@@ -44,6 +45,7 @@ class MapPanel extends JPanel {
     private Image houseT = new ImageIcon("res/map/houseT.png").getImage();
     private Image houseBegin = new ImageIcon("res/map/houseBegin.png").getImage();
     private Image houseEnd = new ImageIcon("res/map/houseEnd.png").getImage();
+    private Image wayImg = new ImageIcon("res/map/way.png").getImage();
 
 
     MapPanel() {
@@ -54,11 +56,14 @@ class MapPanel extends JPanel {
         x1 = (WIDTH - width * squareSize) / 2;
         y1 = (HEIGHT - height * squareSize) / 2;
         mapGenerator = new MapGenerator(width, height, housesNum);
+        field = mapGenerator.getField();
         houses = mapGenerator.getHouses();
         int randNum = (int) (Math.random() * houses.length);
         houseBeginPoint = houses[randNum];
         randNum = (int) (Math.random() * houses.length);
         houseEndPoint = houses[randNum];
+        wayFinder = new WayFinder(field);
+        way = new Point[0];
     }
 
     void generateMap(int width, int height, int housesNum) {
@@ -68,7 +73,9 @@ class MapPanel extends JPanel {
     }
 
     void regenerate() {
+        way = new Point[0];
         mapGenerator = new MapGenerator(width, height, housesNum);
+        field = mapGenerator.getField();
         houses = mapGenerator.getHouses();
         int randNum = (int) (Math.random() * houses.length);
         houseBeginPoint = houses[randNum];
@@ -90,7 +97,9 @@ class MapPanel extends JPanel {
     }
 
     void displayWay() {
-
+        wayFinder = new WayFinder(field);
+        way = wayFinder.getWay(houseBeginPoint.road, houseEndPoint.road);
+        repaint();
     }
 
     void displayMan() {
@@ -128,7 +137,6 @@ class MapPanel extends JPanel {
     }
 
     private void drawField(Graphics g) {
-        field = mapGenerator.getField();
 
         squareSize = Math.min(WIDTH / width, HEIGHT / height);
         x1 = (WIDTH - width * squareSize) / 2;
@@ -164,10 +172,17 @@ class MapPanel extends JPanel {
         }
         g.drawImage(houseBegin, x1 + houseBeginPoint.house.x * squareSize, y1 + houseBeginPoint.house.y * squareSize, squareSize, squareSize, null);
         g.drawImage(houseEnd, x1 + houseEndPoint.house.x * squareSize, y1 + houseEndPoint.house.y * squareSize, squareSize, squareSize, null);
+        drawWay(g);
         for (MouseListener m : getMouseListeners()) {
             removeMouseListener(m);
         }
         addMouseListener(new MapMouseListener(this, houses, x1, y1, squareSize));
+    }
+
+    private void drawWay(Graphics g) {
+        for (Point point : way) {
+            g.drawImage(wayImg, x1 + point.x * squareSize, y1 + point.y * squareSize, squareSize, squareSize, null);
+        }
     }
 
     private void drawRoad(Graphics g, int i, int j) {
@@ -218,11 +233,8 @@ class MapPanel extends JPanel {
 
     public void click(int id, boolean isLeftClick) {
         if (isLeftClick) {
-            System.out.println("left");
             houseBeginPoint = houses[id];
-        }
-        else {
-            System.out.println("right");
+        } else {
             houseEndPoint = houses[id];
         }
         repaint();
