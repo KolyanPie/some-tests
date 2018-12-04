@@ -25,6 +25,10 @@ class MapMouseListener implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
         for (int i = 0; i < houses.length; i++) {
             if (e.getX() < x1 + (houses[i].house.x + 1) * squareSize &&
                     e.getX() > x1 + houses[i].house.x * squareSize &&
@@ -36,7 +40,7 @@ class MapMouseListener implements MouseListener {
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
+    public void mouseReleased(MouseEvent e) {
         if (e.getX() < x1 + (houses[id].house.x + 1) * squareSize &&
                 e.getX() > x1 + houses[id].house.x * squareSize &&
                 e.getY() < y1 + (houses[id].house.y + 1) * squareSize &&
@@ -50,11 +54,6 @@ class MapMouseListener implements MouseListener {
                     break;
             }
         }
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
     }
 
     @Override

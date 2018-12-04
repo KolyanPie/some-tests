@@ -89,7 +89,7 @@ class MainPanel extends JPanel {
         buttonMap.addActionListener(e -> {
             mapPanel.generateMap(sliderWidth.getValue(), sliderHeight.getValue(),
                     sliderHouses.getValue());
-            mapPanel.repaint();
+            mapPanel.regenerate();
         });
         buttonMan.addActionListener(e -> {
             
