@@ -57,6 +57,7 @@ class MapPanel extends JPanel {
         houses = mapGenerator.getHouses();
         int randNum = (int) (Math.random() * houses.length);
         houseBeginPoint = houses[randNum];
+        randNum = (int) (Math.random() * houses.length);
         houseEndPoint = houses[randNum];
     }
 
@@ -71,8 +72,29 @@ class MapPanel extends JPanel {
         houses = mapGenerator.getHouses();
         int randNum = (int) (Math.random() * houses.length);
         houseBeginPoint = houses[randNum];
+        randNum = (int) (Math.random() * houses.length);
         houseEndPoint = houses[randNum];
         repaint();
+    }
+
+    void randBeginHouse() {
+        int randNum = (int) (Math.random() * houses.length);
+        houseBeginPoint = houses[randNum];
+        repaint();
+    }
+
+    void randEndHouse() {
+        int randNum = (int) (Math.random() * houses.length);
+        houseEndPoint = houses[randNum];
+        repaint();
+    }
+
+    void displayWay() {
+
+    }
+
+    void displayMan() {
+
     }
 
     @Override

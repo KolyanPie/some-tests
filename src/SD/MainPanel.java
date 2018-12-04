@@ -80,23 +80,15 @@ class MainPanel extends JPanel {
         coValues(textFieldWidth, sliderWidth);
         coValues(textFieldHeight, sliderHeight);
         coValues(textFieldHouses, sliderHouses);
-        buttonA.addActionListener(e -> {
-
-        });
-        buttonB.addActionListener(e -> {
-
-        });
+        buttonA.addActionListener(e -> mapPanel.randBeginHouse());
+        buttonB.addActionListener(e -> mapPanel.randEndHouse());
         buttonMap.addActionListener(e -> {
             mapPanel.generateMap(sliderWidth.getValue(), sliderHeight.getValue(),
                     sliderHouses.getValue());
             mapPanel.regenerate();
         });
-        buttonMan.addActionListener(e -> {
-            
-        });
-        buttonWay.addActionListener(e -> {
-
-        });
+        buttonMan.addActionListener(e -> mapPanel.displayMan());
+        buttonWay.addActionListener(e -> mapPanel.displayWay());
     }
 
     private void coValues(JTextField textField, JSlider slider) {
