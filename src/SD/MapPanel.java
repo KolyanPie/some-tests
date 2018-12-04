@@ -91,12 +91,14 @@ class MapPanel extends JPanel {
     }
 
     void randBeginHouse() {
+        wayBool = false;
         int randNum = (int) (Math.random() * houses.length);
         houseBeginPoint = houses[randNum];
         repaint();
     }
 
     void randEndHouse() {
+        wayBool = false;
         int randNum = (int) (Math.random() * houses.length);
         houseEndPoint = houses[randNum];
         repaint();
@@ -109,21 +111,23 @@ class MapPanel extends JPanel {
     }
 
     void displayMan() {
-        manBool = true;
-        way = wayFinder.getWay(houseBeginPoint.road, houseEndPoint.road);
-        new Thread(() -> {
-            for (int k = 0; k < way.length; k++) {
-                manId = k;
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        if (!manBool) {
+            manBool = true;
+            way = wayFinder.getWay(houseBeginPoint.road, houseEndPoint.road);
+            new Thread(() -> {
+                for (int k = 0; k < way.length; k++) {
+                    manId = k;
+                    repaint();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
+                manBool = false;
                 repaint();
-            }
-            manBool = false;
-            repaint();
-        }).start();
+            }).start();
+        }
     }
 
     @Override
@@ -261,6 +265,7 @@ class MapPanel extends JPanel {
     }
 
     public void click(int id, boolean isLeftClick) {
+        wayBool = false;
         if (isLeftClick) {
             houseBeginPoint = houses[id];
         } else {
