@@ -14,6 +14,12 @@ public class WayFinder {
         height = field[0].length;
     }
 
+    public void setField(Elements[][] field) {
+        this.field = field;
+        width = field.length;
+        height = field[0].length;
+    }
+
     public Point[] getWay(Point begin, Point end) {
         Stack<Point> stack = new Stack<>();
         Point currentPoint = begin;

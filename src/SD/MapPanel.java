@@ -25,8 +25,10 @@ class MapPanel extends JPanel {
     private House houseEndPoint;
     private MapGenerator mapGenerator;
     private WayFinder wayFinder;
-    private int manId;
     private Point[] way;
+    private boolean wayBool;
+    private boolean manBool;
+    private int manId;
 
     private Image grass = new ImageIcon("res/map/grass.png").getImage();
     private Image roadH = new ImageIcon("res/map/roadH.png").getImage();
@@ -46,6 +48,7 @@ class MapPanel extends JPanel {
     private Image houseBegin = new ImageIcon("res/map/houseBegin.png").getImage();
     private Image houseEnd = new ImageIcon("res/map/houseEnd.png").getImage();
     private Image wayImg = new ImageIcon("res/map/way.png").getImage();
+    private Image manImg = new ImageIcon("res/iconBtnMan.png").getImage();
 
 
     MapPanel() {
@@ -73,6 +76,9 @@ class MapPanel extends JPanel {
     }
 
     void regenerate() {
+        wayBool = false;
+        manBool = false;
+        wayFinder.setField(field);
         way = new Point[0];
         mapGenerator = new MapGenerator(width, height, housesNum);
         field = mapGenerator.getField();
@@ -97,13 +103,27 @@ class MapPanel extends JPanel {
     }
 
     void displayWay() {
-        wayFinder = new WayFinder(field);
+        wayBool = true;
         way = wayFinder.getWay(houseBeginPoint.road, houseEndPoint.road);
         repaint();
     }
 
     void displayMan() {
-
+        manBool = true;
+        way = wayFinder.getWay(houseBeginPoint.road, houseEndPoint.road);
+        new Thread(() -> {
+            for (int k = 0; k < way.length; k++) {
+                manId = k;
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                repaint();
+            }
+            manBool = false;
+            repaint();
+        }).start();
     }
 
     @Override
@@ -172,7 +192,12 @@ class MapPanel extends JPanel {
         }
         g.drawImage(houseBegin, x1 + houseBeginPoint.house.x * squareSize, y1 + houseBeginPoint.house.y * squareSize, squareSize, squareSize, null);
         g.drawImage(houseEnd, x1 + houseEndPoint.house.x * squareSize, y1 + houseEndPoint.house.y * squareSize, squareSize, squareSize, null);
-        drawWay(g);
+        if (wayBool) {
+            drawWay(g);
+        }
+        if (manBool) {
+            drawMan(g);
+        }
         for (MouseListener m : getMouseListeners()) {
             removeMouseListener(m);
         }
@@ -183,6 +208,10 @@ class MapPanel extends JPanel {
         for (Point point : way) {
             g.drawImage(wayImg, x1 + point.x * squareSize, y1 + point.y * squareSize, squareSize, squareSize, null);
         }
+    }
+
+    private void drawMan(Graphics g) {
+        g.drawImage(manImg, x1 + way[manId].x * squareSize, y1 + way[manId].y * squareSize, squareSize, squareSize, null);
     }
 
     private void drawRoad(Graphics g, int i, int j) {
