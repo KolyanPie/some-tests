@@ -52,9 +52,7 @@ class MapPanel extends JPanel {
 
 
     MapPanel() {
-        width = 15;
-        height = 15;
-        housesNum = 30;
+        generateMap(15, 15, 30);
         squareSize = Math.min(WIDTH / width, HEIGHT / height);
         x1 = (WIDTH - width * squareSize) / 2;
         y1 = (HEIGHT - height * squareSize) / 2;
@@ -78,10 +76,10 @@ class MapPanel extends JPanel {
     void regenerate() {
         wayBool = false;
         manBool = false;
-        wayFinder.setField(field);
         way = new Point[0];
         mapGenerator = new MapGenerator(width, height, housesNum);
         field = mapGenerator.getField();
+        wayFinder.setField(field);
         houses = mapGenerator.getHouses();
         int randNum = (int) (Math.random() * houses.length);
         houseBeginPoint = houses[randNum];
@@ -197,6 +195,11 @@ class MapPanel extends JPanel {
         g.drawImage(houseBegin, x1 + houseBeginPoint.house.x * squareSize, y1 + houseBeginPoint.house.y * squareSize, squareSize, squareSize, null);
         g.drawImage(houseEnd, x1 + houseEndPoint.house.x * squareSize, y1 + houseEndPoint.house.y * squareSize, squareSize, squareSize, null);
         if (wayBool) {
+            System.out.println("way");
+            for (Point point :
+                    way) {
+                System.out.println("[" + point.x + ", " + point.y + "]");
+            }
             drawWay(g);
         }
         if (manBool) {
