@@ -1,0 +1,28 @@
+CREATE TABLE users (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	name VARCHAR(50),
+	phone VARCHAR(50));
+	
+INSERT INTO users (name, phone)
+VALUES ('Jevgenij', '+3701111');
+
+INSERT INTO users (name, phone)
+VALUES ('DeniZka', '+3703333');
+
+.open users.db
+.quit
+.tables
+.schema users
+SELECT * FROM users;
+.mode line
+.mode column
+.headers on
+.width 2 8 8
+SELECT * FROM users ORDER BY name;
+SELECT * FROM users ORDER BY name DESC;
+
+CREATE TABLE accounts(
+	login VARCHAR(20) PRIMARY KEY,
+	pass VARCHAR(20));
+  
+  
