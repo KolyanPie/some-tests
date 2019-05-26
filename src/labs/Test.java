@@ -1,5 +1,8 @@
 package labs;
 
+import labs.new_lab.QueueHeadTail;
+import labs.new_lab.CountSorter;
+
 public class Test {
     public static void main(String[] args) {
         QueueHeadTail<Integer> queue = new QueueHeadTail<>();
@@ -12,7 +15,9 @@ public class Test {
         }
         System.out.println();
         System.out.println(queue);
-        CountSorter.sort(queue, 0, 9, 10);
+        System.out.println(queue.size());
+        System.out.println(CountSorter.sort(queue, 0, 9));
+        System.out.println(queue.size());
         System.out.println(queue);
         CountSorter.sort(queue1);
         System.out.println(queue1);
