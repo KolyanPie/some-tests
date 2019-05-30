@@ -1,7 +1,7 @@
-package labs;
+package labs.lab1;
 
-import labs.new_lab.QueueHeadTail;
-import labs.new_lab.CountSorter;
+import labs.lab1.new_lab.QueueHeadTail;
+import labs.lab1.new_lab.CountSorter;
 
 public class Test {
     public static void main(String[] args) {

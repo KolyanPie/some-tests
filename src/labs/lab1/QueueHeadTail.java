@@ -1,9 +1,8 @@
-package labs.new_lab;
+package labs.lab1;
 
 public class QueueHeadTail<T> {
     private Node head;
     private Node tail;
-    private int size;
 
     public QueueHeadTail() {
 
@@ -11,10 +10,6 @@ public class QueueHeadTail<T> {
 
     public QueueHeadTail(T[] arr) {
 
-    }
-
-    public int size() {
-        return size;
     }
 
     public void push(T item) {
@@ -28,7 +23,6 @@ public class QueueHeadTail<T> {
             temp.prev = tail;
             tail = temp;
         }
-        size++;
     }
 
     public T put() {
@@ -43,7 +37,6 @@ public class QueueHeadTail<T> {
             head = head.next;
             head.prev = null;
         }
-        size--;
         return result;
     }
 

@@ -1,4 +1,4 @@
-package labs.new_lab;
+package labs.lab1.new_lab;
 
 public final class CountSorter {
 
