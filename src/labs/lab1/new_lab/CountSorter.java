@@ -21,9 +21,6 @@ public final class CountSorter {
         sort(queue, minValue, maxValue);
     }
 
-    /**
-     * Сложность алгоритма
-     */
     public static QueueHeadTail sort(QueueHeadTail<Integer> queue, int minValue, int maxValue) {
         QueueHeadTail<Integer> result = new QueueHeadTail<>();
         int[] counters = new int[maxValue - minValue + 1];
@@ -32,7 +29,7 @@ public final class CountSorter {
         }
         for (int i = 0; i < counters.length; i++) {
             for (int j = 0; j < counters[i]; j++) {
-                set(result, queue.size() - 1,  i + minValue);
+                set(result, result.size(), i + minValue);
             }
         }
         return result;
