@@ -52,16 +52,13 @@ public class Main {
         ArrayList<Path> list = new ArrayList<>();
         ArrayList<ArrayList<Graph.Incidence>> incidenceMatrix = graph.getIncidenceMatrix();
         for (int i = 0; i < graph.countEdges(); i++) {
+            if (incidenceMatrix.get(vertex).get(i).equals(Graph.Incidence.LOOP)) {
+                Cycle cycle = new Cycle(vertex);
+                cycle.step(vertex, weightMatrix[i]);
+                list.add(new Path(cycle));
+            }
             if (incidenceMatrix.get(vertex).get(i).equals(Graph.Incidence.OUT)) {
-                int nextVertex = graph.getVertexEnd(i);
-                if (nextVertex == vertex) {
-                    System.out.println("12345");
-                    Cycle cycle = new Cycle(vertex);
-                    cycle.step(vertex, weightMatrix[i]);
-                    list.add(new Path(cycle));
-                } else {
-                    findCycles(list, graph, i, vertex);
-                }
+                findCycles(list, graph, i, vertex);
             }
         }
         return list;

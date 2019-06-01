@@ -37,7 +37,6 @@ public class Graph {
             throw new IndexOutOfBoundsException();
         }
         if (vStart == vEnd) {
-            System.out.println("cycle in v = " + vStart);
             for (int i = 0; i < vStart; i++) {
                 incidenceMatrix.get(i).add(Incidence.NONE);
             }
