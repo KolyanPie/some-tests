@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    Graph graph = new Graph();
-    int[] weightMatrix = {11, 2, 4, 5, 1, 2, 5, 3, 3, 3, 6, 4, 3};
+    private Graph graph = new Graph();
+    private int[] weightMatrix = {11, 2, 4, 5, 1, 2, 5, 3, 3, 3, 6, 4, 3};
 
     {
         graph.addVertex();
@@ -34,10 +34,10 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите x");
         int x = scanner.nextInt();
-        main.soutCycles(main.graph, x);
+        main.printCycles(main.graph, x);
     }
 
-    private void soutCycles(Graph graph, int x) {
+    private void printCycles(Graph graph, int x) {
         for (int i = 0; i < graph.countVertex(); i++) {
             ArrayList<Path> list = findCycles(graph, i);
             for (Path p : list) {
@@ -135,11 +135,5 @@ public class Main {
             return stringBuilder.toString();
         }
 
-    }
-
-    private enum Color {
-        WHITE,
-        BLACK,
-        GRAY
     }
 }
